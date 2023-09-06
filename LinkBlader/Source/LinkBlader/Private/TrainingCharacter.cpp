@@ -15,7 +15,7 @@ ATrainingCharacter::ATrainingCharacter()
 void ATrainingCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	 
 }
 
 // Called every frame

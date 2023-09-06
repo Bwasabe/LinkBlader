@@ -13,7 +13,7 @@ class ATrainingCharacter : public ACharacter
 
 public:
 	// Sets default values for this character's properties
-	ATrainingCharacter();
+	ATrainingCharacter();  
 
 protected:
 	// Called when the game starts or when spawned
