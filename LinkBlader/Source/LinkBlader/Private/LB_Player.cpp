@@ -3,7 +3,7 @@
 
 #include "LB_Player.h"
 
-#include "C:/Unreal/Editor/UE_5.1/Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputSubsystems.h"
+#include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "LB_PlayerComponentBase.h"
 #include "LB_PlayerMovement.h"
