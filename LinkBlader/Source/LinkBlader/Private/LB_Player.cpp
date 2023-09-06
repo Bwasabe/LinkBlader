@@ -3,12 +3,18 @@
 
 #include "LB_Player.h"
 
+#include "C:/Unreal/Editor/UE_5.1/Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
+#include "LB_PlayerComponentBase.h"
+#include "LB_PlayerMovement.h"
+
 // Sets default values
 ALB_Player::ALB_Player()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	m_PlayerMovement = CreateDefaultSubobject<ULB_PlayerMovement>(L"PlayerMovement");
 }
 
 // Called when the game starts or when spawned
@@ -28,7 +34,34 @@ void ALB_Player::Tick(float DeltaTime)
 // Called to bind functionality to input
 void ALB_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	UE_LOG(LogTemp, Log, L"BindAction");
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+
+	if (PlayerController)
+	{
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+		if (Subsystem)
+		{
+			Subsystem->AddMappingContext(m_kMappingContext, 0);
+		}
+	}
+	
+
+	UEnhancedInputComponent* EnhancedInputComp = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+
+	if (!EnhancedInputComp)return;
+
+
+	TInlineComponentArray<ULB_PlayerComponentBase*> components;
+
+	GetComponents(components);
+	for(auto* component : components)
+	{
+		component->SetOwner(this);
+		component->BindAction(EnhancedInputComp);
+	}
 }
+
 
