@@ -25,5 +25,11 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputMappingContext* m_kMappingContext;
 
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = PlayerComponent)
+		class ULB_PlayerMovement* m_PlayerMovement; 
 };
