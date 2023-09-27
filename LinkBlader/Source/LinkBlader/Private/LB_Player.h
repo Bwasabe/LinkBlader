@@ -31,5 +31,8 @@ public:
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = PlayerComponent)
-		class ULB_PlayerMovement* m_PlayerMovement; 
+		class ULB_PlayerMovement* m_PlayerMovement;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = PlayerComponent)
+		class ULB_PlayerInteraction* m_PlayerInteract;
 };

@@ -20,6 +20,24 @@ public:
 	class UInputAction* m_InteractionAction;
 
 public:
-	void Interact(const FInputActionValue& InputActionValue);
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Interact )
+	float m_InteractDistance = 300;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Interact )
+	float m_MovePower = 4.f;
+public:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+public:
+	AActor* m_CurrentInteractionObject;
+
+	UPrimitiveComponent* m_InteractionComponent;
+
+	bool m_IsInteract;
+
+	FVector m_ForwardPos;
+public:
+	void StartInteract(const FInputActionValue& InputActionValue);
+	void EndInteract(const FInputActionValue& InputActionValue);
 	virtual void BindAction(UEnhancedInputComponent* EnhancedInputComponent) override;
 };
