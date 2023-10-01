@@ -29,8 +29,6 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
-	AActor* m_CurrentInteractionObject;
-
 	UPrimitiveComponent* m_InteractionComponent;
 
 	bool m_IsInteract;
