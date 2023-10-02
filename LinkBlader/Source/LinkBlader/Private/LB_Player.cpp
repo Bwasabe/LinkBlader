@@ -6,6 +6,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "LB_PlayerComponentBase.h"
+#include "LB_PlayerInteraction.h"
 #include "LB_PlayerMovement.h"
 
 // Sets default values
@@ -15,6 +16,7 @@ ALB_Player::ALB_Player()
 	PrimaryActorTick.bCanEverTick = true;
 
 	m_PlayerMovement = CreateDefaultSubobject<ULB_PlayerMovement>(L"PlayerMovement");
+	m_PlayerInteract = CreateDefaultSubobject<ULB_PlayerInteraction>(L"PlayerInteraction");
 }
 
 // Called when the game starts or when spawned

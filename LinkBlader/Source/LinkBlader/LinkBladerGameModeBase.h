@@ -15,3 +15,4 @@ class LINKBLADER_API ALinkBladerGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 	
 };
+
