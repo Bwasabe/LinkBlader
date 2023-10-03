@@ -3,3 +3,6 @@
 
 #include "EnemyAttackComp.h"
 
+void UEnemyAttackComp::MeleeAttack()
+{
+}
