@@ -15,5 +15,6 @@ class UEnemyAttackComp : public UEnemyBaseComponent
 	GENERATED_BODY()
 	
 public:
-	void MeleeAttack(); 
+	UFUNCTION(BlueprintCallable)
+		void MeleeAttack();		
 };
