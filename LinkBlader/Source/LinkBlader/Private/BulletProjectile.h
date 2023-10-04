@@ -8,6 +8,8 @@
 
 UCLASS()
 class ABulletProjectile : public AActor
+
+
 {
 	GENERATED_BODY()
 	

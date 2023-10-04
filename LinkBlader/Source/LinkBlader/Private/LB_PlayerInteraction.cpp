@@ -20,40 +20,47 @@ void ULB_PlayerInteraction::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 	if(m_IsInteract) // 상호작용중이면 현재 Object를 ForwardPos로 움직인다
 	{
-		// FVector lerpPos = FMath::Lerp(m_CurrentInteractionObject->GetActorLocation(), m_ForwardPos, GetWorld()->DeltaTimeSeconds * m_LerpSmooth);
-
-		// m_CurrentInteractionObject->SetActorLocation(lerpPos, true);
-
-		FVector Direction = m_ForwardPos - m_InteractionComponent->GetComponentLocation();
+		FHitResult LocationHit;
 		
-		m_InteractionComponent->SetPhysicsLinearVelocity(Direction * m_MovePower);
+		FVector LerpPos = FMath::Lerp(m_InteractionComponent->GetComponentLocation(), m_ForwardPos, DeltaTime * 8);
 
-		UE_LOG(LogTemp, Log, TEXT("%s"), *Direction.ToString() );
+		m_InteractionComponent->SetWorldLocation(LerpPos, true, &LocationHit, ETeleportType::TeleportPhysics);
+		
+		FRotator CurRot = m_InteractionComponent->GetComponentRotation();
+
+		FRotator TargetRot = FRotator(0, m_Owner->GetActorRotation().Yaw + 90, 0);
+
+		FRotator Rotator = FMath::RInterpTo(CurRot, TargetRot, DeltaTime, 10);
+
+		m_InteractionComponent->SetWorldRotation(Rotator, true, nullptr, ETeleportType::TeleportPhysics);
+
+		UE_LOG(LogTemp, Log, L"%s", *LocationHit.ImpactPoint.ToString() );
 	}
 	else // 상호작용중이 아니면 계속 오브젝트를 LineTrace로 찾고,
 	{
 		if(GetWorld()->LineTraceSingleByChannel(HitResult, start,m_ForwardPos,ECC_Visibility, collisionParams))
 		{
-			if(HitResult.GetActor()->Tags.Num() > 0 && HitResult.GetActor()->Tags.Contains(L"Object"))
+			AActor* actor =HitResult.GetActor();
+			if(!actor)return;
+			
+			if(actor->Tags.Num() > 0 && actor->Tags.Contains(L"Object"))
 			{
-				UE_LOG(LogTemp, Log, L"Hit");
 				// UI켜주기
-
-				m_CurrentInteractionObject = HitResult.GetActor();
+				
 				m_InteractionComponent = HitResult.GetComponent();
 				return;
 			}
 		}
-		m_CurrentInteractionObject = nullptr;
+		m_InteractionComponent = nullptr;
 	}
 	
 }
 
 void ULB_PlayerInteraction::StartInteract(const FInputActionValue& InputActionValue)
 {
-	if(!m_CurrentInteractionObject)return;
+	if(!m_InteractionComponent)return;
 	
-	FVector Direction = m_ForwardPos - m_InteractionComponent->GetComponentLocation();
+	const FVector Direction = m_ForwardPos - m_InteractionComponent->GetComponentLocation();
 
 	m_InteractionComponent->SetEnableGravity(false);
 	m_InteractionComponent->AddImpulse(Direction);
@@ -64,17 +71,17 @@ void ULB_PlayerInteraction::StartInteract(const FInputActionValue& InputActionVa
 
 void ULB_PlayerInteraction::EndInteract(const FInputActionValue& InputActionValue)
 {
+	if(!m_InteractionComponent)return;
+
 	m_InteractionComponent->SetEnableGravity(true);
 	m_InteractionComponent->SetPhysicsLinearVelocity(FVector(0,0,0));
-
+	
 	m_InteractionComponent = nullptr;
 	m_IsInteract = false;
-	m_CurrentInteractionObject = nullptr;
 }
 
 void ULB_PlayerInteraction::BindAction(UEnhancedInputComponent* EnhancedInputComponent)
 {
 	EnhancedInputComponent->BindAction(m_InteractionAction, ETriggerEvent::Started, this, &ULB_PlayerInteraction::StartInteract);
 	EnhancedInputComponent->BindAction(m_InteractionAction, ETriggerEvent::Completed, this, &ULB_PlayerInteraction::EndInteract);
-
 }
