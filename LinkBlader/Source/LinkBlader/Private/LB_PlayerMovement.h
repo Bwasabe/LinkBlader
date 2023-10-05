@@ -29,6 +29,12 @@ public:
 	class UInputAction* m_TurnAction;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ControlValue, meta = (AllowPrivateAccess = "true"))
+		bool CantMove;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ControlValue, meta = (AllowPrivateAccess = "true"))
+		bool CantTurn;
+public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void BindAction(UEnhancedInputComponent* EnhancedInputComponent) override;
 
