@@ -3,6 +3,8 @@
 
 #include "LB_PlayerInteraction.h"
 
+#include <string>
+
 #include "EnhancedInputComponent.h"
 #include "LB_Player.h"
 
@@ -11,42 +13,47 @@ void ULB_PlayerInteraction::TickComponent(float DeltaTime, ELevelTick TickType, 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	FHitResult HitResult;
-	// LineTrace�??�고, Tag�?검?�해 ?�브?�트�??�으�?가?�옴
+	// LineTrace를 쏘고, Tag를 검사해 오브젝트면 앞으로 가져옴
 	FCollisionQueryParams collisionParams;
 	collisionParams.AddIgnoredActor(m_Owner);
 
-	const FVector start = m_Owner->GetActorLocation();
-	m_ForwardPos = start + m_Owner->GetControlRotation().Vector() * m_InteractDistance;
+	const FVector Start = m_Owner->GetActorLocation();
+	m_ForwardPos = Start + m_Owner->GetControlRotation().Vector() * m_InteractDistance;
 
-	if(m_IsInteract) // ?�호?�용중이�??�재 Object�?ForwardPos�??�직인??
+	if(m_IsInteract) // 상호작용중이면 현재 Object를 ForwardPos로 움직인다
 	{
 		FHitResult LocationHit;
 		
 		FVector LerpPos = FMath::Lerp(m_InteractionComponent->GetComponentLocation(), m_ForwardPos, DeltaTime * 8);
-
-		m_InteractionComponent->SetWorldLocation(LerpPos, true, &LocationHit, ETeleportType::TeleportPhysics);
 		
+		m_InteractionComponent->SetWorldLocation(LerpPos, true, &LocationHit, ETeleportType::TeleportPhysics);
+
+		if(LocationHit.ImpactPoint != FVector::Zero() && FVector::Dist(LocationHit.ImpactPoint, Start) >= m_InteractDistance * 1.5f)
+			m_InteractionComponent->SetWorldLocation(Start);
+
 		FRotator CurRot = m_InteractionComponent->GetComponentRotation();
-
 		FRotator TargetRot = FRotator(0, m_Owner->GetActorRotation().Yaw + 90, 0);
-
 		FRotator Rotator = FMath::RInterpTo(CurRot, TargetRot, DeltaTime, 10);
-
+		
 		m_InteractionComponent->SetWorldRotation(Rotator, true, nullptr, ETeleportType::TeleportPhysics);
-
-		UE_LOG(LogTemp, Log, L"%s", *LocationHit.ImpactPoint.ToString() );
+		
+		
+		UE_LOG(LogTemp, Log, L"Moving");
 	}
-	else // ?�호?�용중이 ?�니�?계속 ?�브?�트�?LineTrace�?찾고,
+	else // 상호작용중이 아니면 계속 오브젝트를 LineTrace로 찾고,
 	{
-		if(GetWorld()->LineTraceSingleByChannel(HitResult, start,m_ForwardPos,ECC_Visibility, collisionParams))
+		if(GetWorld()->LineTraceSingleByChannel(HitResult, Start,m_ForwardPos,ECC_Visibility, collisionParams))
 		{
+			DrawDebugLine(GetWorld(), Start, m_ForwardPos, FColor::Green, true, 1.f, 0, 0.1f);
+			
 			AActor* actor =HitResult.GetActor();
 			if(!actor)return;
 			
 			if(actor->Tags.Num() > 0 && actor->Tags.Contains(L"Object"))
 			{
-				// UI켜주�?
-				
+				// UI켜주기
+				UE_LOG(LogTemp, Log, L"Hit");
+
 				m_InteractionComponent = HitResult.GetComponent();
 				return;
 			}
