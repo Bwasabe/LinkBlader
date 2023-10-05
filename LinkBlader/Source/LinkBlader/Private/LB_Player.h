@@ -27,6 +27,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "DeadFunc")
 	void Dead();
 
 private:
