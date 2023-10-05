@@ -7,6 +7,17 @@
 
 #include "EnhancedInputComponent.h"
 #include "LB_Player.h"
+#include "Blueprint/UserWidget.h"
+
+// ULB_PlayerInteraction::ULB_PlayerInteraction()
+// {
+// 	static ConstructorHelpers::FClassFinder<UUserWidget> Widget(L"/Game/01_LB_Content/BluePrint/Widget/InteractionUI.InteractionUI");
+// 	if (Widget.Succeeded())
+// 	{
+// 		InteractionWidgetClass = Widget.Class;
+// 	}
+// }
+
 
 void ULB_PlayerInteraction::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -36,31 +47,42 @@ void ULB_PlayerInteraction::TickComponent(float DeltaTime, ELevelTick TickType, 
 		FRotator Rotator = FMath::RInterpTo(CurRot, TargetRot, DeltaTime, 10);
 		
 		m_InteractionComponent->SetWorldRotation(Rotator, true, nullptr, ETeleportType::TeleportPhysics);
-		
-		
-		UE_LOG(LogTemp, Log, L"Moving");
 	}
 	else // 상호작용중이 아니면 계속 오브젝트를 LineTrace로 찾고,
 	{
 		if(GetWorld()->LineTraceSingleByChannel(HitResult, Start,m_ForwardPos,ECC_Visibility, collisionParams))
 		{
-			DrawDebugLine(GetWorld(), Start, m_ForwardPos, FColor::Green, true, 1.f, 0, 0.1f);
-			
 			AActor* actor =HitResult.GetActor();
 			if(!actor)return;
 			
 			if(actor->Tags.Num() > 0 && actor->Tags.Contains(L"Object"))
 			{
-				// UI켜주기
-				UE_LOG(LogTemp, Log, L"Hit");
 
+				InteractionWidget->SetVisibility(ESlateVisibility::Visible);
+				
 				m_InteractionComponent = HitResult.GetComponent();
 				return;
 			}
 		}
+		InteractionWidget->SetVisibility(ESlateVisibility::Hidden);
 		m_InteractionComponent = nullptr;
 	}
 	
+}
+
+void ULB_PlayerInteraction::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if(InteractionWidgetClass != nullptr)
+	{
+		InteractionWidget = CreateWidget<UUserWidget>(GetWorld(), InteractionWidgetClass);
+		if(InteractionWidget != nullptr)
+		{
+			InteractionWidget->AddToViewport();
+			InteractionWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
 }
 
 void ULB_PlayerInteraction::StartInteract(const FInputActionValue& InputActionValue)

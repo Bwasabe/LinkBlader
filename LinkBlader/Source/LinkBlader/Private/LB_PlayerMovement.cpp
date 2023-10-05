@@ -38,11 +38,14 @@ void ULB_PlayerMovement::BeginPlay()
 
 void ULB_PlayerMovement::Jump(const FInputActionValue& Value)
 {
+	if(CantMove)return;
 	m_Owner->Jump();
 }
 
 void ULB_PlayerMovement::Move(const FInputActionValue& Value)
 {
+	if(CantMove)return;
+	
 	m_MoveDir = Value.Get<FVector2D>();
 
 	if(m_Owner->Controller != nullptr)
@@ -67,6 +70,8 @@ void ULB_PlayerMovement::Move(const FInputActionValue& Value)
 
 void ULB_PlayerMovement::Turn(const FInputActionValue& Value)
 {
+	if(CantTurn)return;
+	
 	FVector2D turn = Value.Get<FVector2D>();
 	if(m_Owner->Controller != nullptr)
 	{
