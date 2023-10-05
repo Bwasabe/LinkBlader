@@ -8,6 +8,7 @@
 #include "LB_PlayerComponentBase.h"
 #include "LB_PlayerInteraction.h"
 #include "LB_PlayerMovement.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ALB_Player::ALB_Player()
@@ -78,7 +79,17 @@ void ALB_Player::Dead()
 	if (PlayerController)
 		PlayerController->PlayerCameraManager->StartCameraShake(m_CameraShakeClass);
 
-	// APlayerController* Controller = 
+	float DelaySeconds = 0.8f;
+        
+        // Set a timer to call YourDelayedFunction after the specified delay.
+        GetWorldTimerManager().SetTimer(DelayedFunctionTimerHandle, this, &ALB_Player::Restart, DelaySeconds, false);
+}
+
+void ALB_Player::Restart()
+{
+	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(this);
+	
+	UGameplayStatics::OpenLevel(this, *CurrentLevelName, true);
 }
 
 

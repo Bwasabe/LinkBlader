@@ -28,6 +28,9 @@ public:
 
 public:
 	void Dead();
+
+private:
+	void Restart();
 public:
 	UPROPERTY(EditDefaultsOnly, Category = CameraShake)
 	TSubclassOf<class UCameraShakeBase> m_CameraShakeClass;
@@ -44,4 +47,7 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = PlayerComponent)
 		class ULB_PlayerInteraction* m_PlayerInteract;
+		
+		private:
+            FTimerHandle DelayedFunctionTimerHandle;
 };
