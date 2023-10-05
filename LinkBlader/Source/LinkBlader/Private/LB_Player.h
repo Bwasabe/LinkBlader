@@ -49,6 +49,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = PlayerComponent)
 		class ULB_PlayerInteraction* m_PlayerInteract;
 		
-		private:
-            FTimerHandle DelayedFunctionTimerHandle;
+private:
+	FTimerHandle DelayedFunctionTimerHandle;
 };
