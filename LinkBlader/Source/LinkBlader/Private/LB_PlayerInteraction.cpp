@@ -3,20 +3,9 @@
 
 #include "LB_PlayerInteraction.h"
 
-#include <string>
-
 #include "EnhancedInputComponent.h"
 #include "LB_Player.h"
 #include "Blueprint/UserWidget.h"
-
-// ULB_PlayerInteraction::ULB_PlayerInteraction()
-// {
-// 	static ConstructorHelpers::FClassFinder<UUserWidget> Widget(L"/Game/01_LB_Content/BluePrint/Widget/InteractionUI.InteractionUI");
-// 	if (Widget.Succeeded())
-// 	{
-// 		InteractionWidgetClass = Widget.Class;
-// 	}
-// }
 
 
 void ULB_PlayerInteraction::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

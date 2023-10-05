@@ -25,10 +25,19 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 public:
+	void Dead();
+public:
+	UPROPERTY(EditDefaultsOnly, Category = CameraShake)
+	TSubclassOf<class UCameraShakeBase> m_CameraShakeClass;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputMappingContext* m_kMappingContext;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* m_DieAction;
+	
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = PlayerComponent)
 		class ULB_PlayerMovement* m_PlayerMovement;

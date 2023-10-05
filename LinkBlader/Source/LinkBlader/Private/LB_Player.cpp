@@ -64,6 +64,21 @@ void ALB_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		component->SetOwner(this);
 		component->BindAction(EnhancedInputComp);
 	}
+
+	EnhancedInputComp->BindAction(m_DieAction, ETriggerEvent::Triggered, this, &ALB_Player::Dead);
+
+}
+
+void ALB_Player::Dead()
+{
+	m_PlayerMovement->CantMove = true;
+	m_PlayerMovement->CantTurn = true;
+
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();; 
+	if (PlayerController)
+		PlayerController->PlayerCameraManager->StartCameraShake(m_CameraShakeClass);
+
+	// APlayerController* Controller = 
 }
 
 

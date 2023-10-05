@@ -15,8 +15,6 @@ class ULB_PlayerInteraction : public ULB_PlayerComponentBase
 {
 	GENERATED_BODY()
 
-// public:
-	// ULB_PlayerInteraction();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* m_InteractionAction;
