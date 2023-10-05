@@ -27,7 +27,10 @@ void ULB_PlayerInteraction::TickComponent(float DeltaTime, ELevelTick TickType, 
 		FVector LerpPos = FMath::Lerp(m_InteractionComponent->GetComponentLocation(), m_ForwardPos, DeltaTime * 8);
 		
 		m_InteractionComponent->SetWorldLocation(LerpPos, true, &LocationHit, ETeleportType::TeleportPhysics);
-		
+
+		if(LocationHit.ImpactPoint != FVector::Zero() && FVector::Dist(LocationHit.ImpactPoint, Start) >= m_InteractDistance * 1.5f)
+			m_InteractionComponent->SetWorldLocation(Start);
+
 		FRotator CurRot = m_InteractionComponent->GetComponentRotation();
 		FRotator TargetRot = FRotator(0, m_Owner->GetActorRotation().Yaw + 90, 0);
 		FRotator Rotator = FMath::RInterpTo(CurRot, TargetRot, DeltaTime, 10);
