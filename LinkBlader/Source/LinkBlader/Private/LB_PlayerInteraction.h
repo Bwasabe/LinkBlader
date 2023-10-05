@@ -27,7 +27,7 @@ public:
 	float m_MovePower = 4.f;
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	virtual void BeginPlay() override;
 public:
 	UPrimitiveComponent* m_InteractionComponent;
 
@@ -38,4 +38,10 @@ public:
 	void StartInteract(const FInputActionValue& InputActionValue);
 	void EndInteract(const FInputActionValue& InputActionValue);
 	virtual void BindAction(UEnhancedInputComponent* EnhancedInputComponent) override;
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category = Widget)
+		TSubclassOf<class UUserWidget> InteractionWidgetClass;
+private:
+	UUserWidget* InteractionWidget;
 };

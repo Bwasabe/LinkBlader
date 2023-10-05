@@ -9,24 +9,25 @@
 
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class ULB_PlayerMovement : public ULB_PlayerComponentBase
-{
+class ULB_PlayerMovement : public ULB_PlayerComponentBase {
 	GENERATED_BODY()
 
-	
 private:
 	FVector2D m_MoveDir;
-
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* m_MoveAction;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* m_JumpAction;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* m_TurnAction;
+
+public:
+	bool CantMove;
+	bool CantTurn;
 
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -41,5 +42,4 @@ public:
 	void Move(const FInputActionValue& Value);
 	void Turn(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& Value);
-
 };
