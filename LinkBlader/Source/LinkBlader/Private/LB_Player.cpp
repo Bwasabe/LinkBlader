@@ -66,7 +66,7 @@ void ALB_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		component->BindAction(EnhancedInputComp);
 	}
 
-	EnhancedInputComp->BindAction(m_DieAction, ETriggerEvent::Triggered, this, &ALB_Player::Dead);
+	// EnhancedInputComp->BindAction(m_DieAction, ETriggerEvent::Triggered, this, &ALB_Player::Dead);
 
 }
 
@@ -80,15 +80,21 @@ void ALB_Player::Dead()
 		PlayerController->PlayerCameraManager->StartCameraShake(m_CameraShakeClass);
 
 	float DelaySeconds = 0.8f;
+	
+	UE_LOG(LogTemp,Log,L"StartTimer");
         
-        // Set a timer to call YourDelayedFunction after the specified delay.
-        GetWorldTimerManager().SetTimer(DelayedFunctionTimerHandle, this, &ALB_Player::Restart, DelaySeconds, false);
+    // Set a timer to call YourDelayedFunction after the specified delay.
+    GetWorldTimerManager().SetTimer(DelayedFunctionTimerHandle, this, &ALB_Player::ReStartGame, DelaySeconds, false);
 }
 
-void ALB_Player::Restart()
+void ALB_Player::ReStartGame()
 {
-	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(this);
+	UE_LOG(LogTemp,Log, L"asdfasd");
 	
+	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(this);
+
+	UE_LOG(LogTemp,Log, L"%s" , *CurrentLevelName);
+
 	UGameplayStatics::OpenLevel(this, *CurrentLevelName, true);
 }
 
