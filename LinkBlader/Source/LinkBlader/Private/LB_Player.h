@@ -31,7 +31,7 @@ public:
 	void Dead();
 
 private:
-	void Restart();
+	void ReStartGame();
 public:
 	UPROPERTY(EditDefaultsOnly, Category = CameraShake)
 	TSubclassOf<class UCameraShakeBase> m_CameraShakeClass;
