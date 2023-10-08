@@ -13,14 +13,14 @@ void ULB_PlayerInteraction::TickComponent(float DeltaTime, ELevelTick TickType, 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	FHitResult HitResult;
-	// LineTrace를 쏘고, Tag를 검사해 오브젝트면 앞으로 가져옴
+	// LineTrace�??�고, Tag�?검?�해 ?�브?�트�??�으�?가?�옴
 	FCollisionQueryParams collisionParams;
 	collisionParams.AddIgnoredActor(m_Owner);
 
 	const FVector Start = m_Owner->GetActorLocation();
 	m_ForwardPos = Start + m_Owner->GetControlRotation().Vector() * m_InteractDistance;
 
-	if(m_IsInteract) // 상호작용중이면 현재 Object를 ForwardPos로 움직인다
+	if(m_IsInteract) // ?�호?�용중이�??�재 Object�?ForwardPos�??�직인??
 	{
 		FHitResult LocationHit;
 		
@@ -37,7 +37,7 @@ void ULB_PlayerInteraction::TickComponent(float DeltaTime, ELevelTick TickType, 
 		
 		m_InteractionComponent->SetWorldRotation(Rotator, true, nullptr, ETeleportType::TeleportPhysics);
 	}
-	else // 상호작용중이 아니면 계속 오브젝트를 LineTrace로 찾고,
+	else // ?�호?�용중이 ?�니�?계속 ?�브?�트�?LineTrace�?찾고,
 	{
 		if(GetWorld()->LineTraceSingleByChannel(HitResult, Start,m_ForwardPos,ECC_Visibility, collisionParams))
 		{

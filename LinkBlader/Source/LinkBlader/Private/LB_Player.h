@@ -51,4 +51,6 @@ public:
 		
 private:
 	FTimerHandle DelayedFunctionTimerHandle;
+
+	bool m_IsDead;
 };

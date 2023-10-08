@@ -72,6 +72,9 @@ void ALB_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 void ALB_Player::Dead()
 {
+	if (m_IsDead)return;
+
+	m_IsDead = true;
 	m_PlayerMovement->CantMove = true;
 	m_PlayerMovement->CantTurn = true;
 
